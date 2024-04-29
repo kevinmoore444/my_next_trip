@@ -5,7 +5,7 @@
 <br/>
 ...click on individual countries to display more pics/information about that country, including its major attractions and cities.
 <br/>
-...filter countries based upon criteria (continent, cost of living, season)
+...filter countries based upon criteria (continent, cost of living, season, category-tag)
 <br/>
 ...view a rank order of countries for top 20 historical, cultural, food, nature, adventure sports, etc. 
 <br/>
