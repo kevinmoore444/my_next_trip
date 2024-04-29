@@ -7,5 +7,5 @@
 ...be able to register, log in, and  build my own bucket list of dream countries, cities, and attractions.
 
 
-**As an Admin I want to be able to… **
-…Post/edit/delete content - only available for admins
+**As an Admin I want to be able to…**
+…Post/edit/delete content - feature only available for admins
