@@ -1,6 +1,7 @@
 package org.example.models;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
@@ -16,12 +17,12 @@ public class Country {
     @NotBlank(message = "Country Image is required.")
     @Size(max = 255, message = "Customer name cannot be greater than 255 characters.")
     private String image;
-    @NotBlank(message = "Cost of Living is required.")
+    @NotNull(message = "Cost of Living is required.")
     private CostOfLiving costOfLiving;
     @NotBlank(message = "Description is required")
     @Size(max = 300, message = "Customer name cannot be greater than 255 characters.")
     private String description;
-    @NotBlank(message = "Region is required.")
+    @NotNull(message = "Region is required.")
     private Region region;
     private List<Tag> tags;
     private Season seasonToAvoid;
