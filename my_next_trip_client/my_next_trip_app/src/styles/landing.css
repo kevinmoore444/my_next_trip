@@ -1,0 +1,31 @@
+.containerStyle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* padding-top: 20px; */
+    justify-content: center;
+    height: 100vh;
+    background-color: #04ADEE;
+}
+
+.buttonStyle {
+    background-color: #6b6a68;
+    border-color: #6b6a68;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.logoStyle {
+    width: 50%;
+    min-width: 250px;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.buttonStyle:hover {
+    background-color: #ffbf47;
+}
