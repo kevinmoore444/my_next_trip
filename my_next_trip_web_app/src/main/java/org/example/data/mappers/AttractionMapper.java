@@ -15,6 +15,7 @@ public class AttractionMapper implements RowMapper<Attraction>{
             attraction.setName(rs.getString("attraction_name"));
             attraction.setDescription(rs.getString("attraction_description"));
             attraction.setImage(rs.getString("attraction_image"));
+            attraction.setCountryId(rs.getInt("country_id"));
             return attraction;
         }
 }

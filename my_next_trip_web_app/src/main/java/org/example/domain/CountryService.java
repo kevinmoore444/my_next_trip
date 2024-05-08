@@ -19,24 +19,20 @@ public class CountryService {
     //Dependencies
     private final CountryRepository countryRepository;
 
-
     //Constructor
     public CountryService(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
     }
-
 
     //Find All
     public List<Country> findAllCountries() {
         return countryRepository.findAllCountries();
     }
 
-
     //Find By ID
     public Country findById(int countryId) {
         return countryRepository.findCountryByID(countryId);
     }
-
 
     //Add Country
     public Result<Country> addCountry(Country country) throws DataAccessException {
@@ -99,9 +95,6 @@ public class CountryService {
         return result;
     }
 
-
-
-
     //Delete Country
     public Result<Country> deleteById(int countryId) throws DataAccessException {
         Result<Country> result = new Result<>();
@@ -112,7 +105,28 @@ public class CountryService {
         return result;
     }
 
+    //Find All Countries associated with one User ID (Get Bucket List)
+    public List<Country> findAllCountriesByUserId(int userId){
+        return countryRepository.findallCountriesByUserId(userId);
+    }
 
+    //Add Country Associated with a User ID (Add to Bucket List)
+    public Result<Void> addToUserCountryList(int appUserId, int countyId){
+        Result<Void> result = new Result<>();
+        if(!countryRepository.addToUserCountryList(appUserId, countyId)){
+            result.addErrorMessage(("Transaction Failed At the Repository Level"));
+        }
+        return result;
+    }
 
+    //Delete Record From App_User_City (Delete from Bucket List)
+    public Result<Void> deleteFromUserCountryList(int appUserId, int countryId){
+        Result<Void> result = new Result<>();
+        if (!countryRepository.deleteFromUserCountryList(appUserId, countryId)) {
+            result.addErrorMessage("Transaction Failed At the Repository Level");
+            result.setNotFound();
+        }
+        return result;
+    }
 
 }

@@ -10,10 +10,7 @@ function Home() {
     <>
       <NavBar/>
       <CountryCards/>
-      <Footer/>
-
-
-      
+      <Footer/>      
     </>
   )
 }

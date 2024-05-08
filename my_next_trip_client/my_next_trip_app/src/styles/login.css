@@ -1,0 +1,40 @@
+.container-style {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    border: 2px solid #FFBF47;
+}
+
+.card-header {
+    background-color: #04ADEE;
+    color: white;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.btn-login {
+    background-color: #FFBF47;
+    color: white;
+    border: none;
+}
+
+.btn-login:hover {
+    background-color: #ffaa00;
+    /* Slightly darker shade */
+}
+
+.link-register {
+    color: #04ADEE;
+    text-decoration: none;
+}
+
+.link-register:hover {
+    color: #ffaa00;
+    /* Different color on hover */
+}

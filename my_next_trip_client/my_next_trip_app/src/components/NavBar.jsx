@@ -1,9 +1,24 @@
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import {useContext } from 'react';
+import UserAuth from '../context/UserAuth';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is included
 import Logo from "../assets/my_next_trip_logo.png";
 import "../styles/nav.css";
 
+    
+
+
     const NavigationBar = () => {
+        const auth = useContext(UserAuth);
+        const navigate = useNavigate();
+
+        const handleLogout = async () => {
+            auth.logout()
+            navigate('/')
+        }
+
+
         return (
         <nav className="navbar navbar-expand-lg navbar-dark navbar-custom">
             <div className="container-fluid">
@@ -24,9 +39,16 @@ import "../styles/nav.css";
                 </li>
                 </ul>
                 <ul className="navbar-nav">
-                <li className="nav-item">
-                    <Link className="nav-link" to="/login">Login</Link>
-                </li>
+                {/* If User logged in display log out button, and vice versa */}
+                {auth.user ? (
+                        <li className="nav-item">
+                            <button className="btn nav-link" onClick={handleLogout}>Log Out</button>
+                        </li>
+                    ) : (
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/login">Log In</Link>
+                        </li>
+                    )}
                 </ul>
             </div>
             </div>
@@ -37,4 +59,3 @@ import "../styles/nav.css";
     export default NavigationBar;
 
 
-   

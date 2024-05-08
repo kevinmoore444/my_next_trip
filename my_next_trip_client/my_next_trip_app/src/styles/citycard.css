@@ -1,0 +1,29 @@
+.city-card .card-body {
+    background-color: #04ADEE;
+}
+
+
+/* Styles for the toggle button */
+.toggle-button {
+    background-color: #6b6a68;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.toggle-button.add {
+    background-color: #4CAF50;
+    /* Green for adding */
+}
+
+.toggle-button.remove {
+    background-color: #FF4136;
+    /* Red for removing */
+}
+
+.toggle-button:hover {
+    opacity: 0.9;
+}

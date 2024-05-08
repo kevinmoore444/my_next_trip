@@ -111,4 +111,35 @@ public class CountryJdbcTemplateRepository implements CountryRepository{
     }
 
 
+    //Find All Countries associated with one User ID (Get Bucket List)
+    @Override
+    public List<Country> findallCountriesByUserId(int userId){
+        final String sql = """
+                SELECT * FROM country c
+                JOIN app_user_country auc on auc.country_id = c.country_id
+                WHERE auc.app_user_id = ?
+                """;
+
+        return jdbcTemplate.query(sql, new CountryMapper(), userId);
+    }
+
+
+    //Add Country Associated with a User ID (Add to Bucket List)
+    @Override
+    public boolean addToUserCountryList(int appUserId, int countryId) {
+        final String sql = """
+                INSERT INTO app_user_country (app_user_id, country_id)
+                VALUES (?, ?);
+                """;
+        return jdbcTemplate.update(sql, appUserId, countryId) > 0;
+    }
+
+    //Delete Record From App_User_country (Delete from Bucket List)
+    @Override
+    public boolean deleteFromUserCountryList(int appUserId, int countryId) {
+        final String sql = "DELETE FROM app_user_country where app_user_id = ? AND country_id = ?";
+        return jdbcTemplate.update(sql, appUserId, countryId) > 0;
+    }
+
+
 }

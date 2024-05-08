@@ -1,6 +1,5 @@
-package org.example.data;
+package org.example.data.repositories;
 
-import org.example.data.repositories.CountryJdbcTemplateRepository;
 import org.example.models.CostOfLiving;
 import org.example.models.Country;
 import org.example.models.Region;

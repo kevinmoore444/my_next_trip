@@ -16,6 +16,7 @@ public class CityMapper implements RowMapper<City> {
         city.setName(rs.getString("city_name"));
         city.setDescription(rs.getString("city_description"));
         city.setImage(rs.getString("city_image"));
+        city.setCountryId(rs.getInt("country_id"));
         return city;
     }
 }

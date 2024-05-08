@@ -1,12 +1,12 @@
-.card-body {
+.country-card .card-body {
     background-color: #04ADEE;
 }
 
-.card:hover {
+.country-card:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.card:hover .card-body {
+.country-card:hover .card-body {
     background-color: #ffbf47;
 }

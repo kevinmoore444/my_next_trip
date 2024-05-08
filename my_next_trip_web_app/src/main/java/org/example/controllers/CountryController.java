@@ -29,7 +29,6 @@ public class CountryController {
 
     
     //API Endpoints
-
     @GetMapping
     public List<Country> findAllCountries() throws DataAccessException {
         return service.findAllCountries();
@@ -44,7 +43,7 @@ public class CountryController {
         return new ResponseEntity<>(country, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping ("/user")
     public ResponseEntity<?> createCountry(@RequestBody @Valid Country country, BindingResult bindingResult) throws DataAccessException {
         //Controller level validation:
         if (bindingResult.hasErrors()) {
@@ -60,7 +59,7 @@ public class CountryController {
         return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED); // 201
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/user/{id}")
     public ResponseEntity<?> updateCountry(@PathVariable int id, @RequestBody @Valid Country country, BindingResult bindingResult) throws DataAccessException {
         if (id != country.getId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT); // 409 Error
@@ -84,7 +83,7 @@ public class CountryController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 Error
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<Void> deleteCountry(@PathVariable int id) throws DataAccessException {
         Result<Country> result = service.deleteById(id);
         if (result.getType() == ResultType.NOT_FOUND) {
@@ -92,6 +91,35 @@ public class CountryController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 Error
     }
+
+
+    //Find All Countries associated with one User ID (Get Bucket List)
+    @GetMapping("/user-list/{userId}")
+    public List<Country> findAllCountriesByUserId(@PathVariable int userId) throws DataAccessException {
+        return service.findAllCountriesByUserId(userId);
+    }
+
+    //Add Country Associated with a User ID (Add to Bucket List)
+    @PostMapping("/{countryId}/{appUserId}")
+    public ResponseEntity<?> addToUserCountryList(@PathVariable int countryId, @PathVariable int appUserId) throws DataAccessException {
+
+        Result<?> result = service.addToUserCountryList(appUserId, countryId);
+        if (!result.isSuccess()) {
+            return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST); // 400
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED); // 201
+    }
+
+    //Delete Record From App_User_City (Delete from Bucket List)
+    @DeleteMapping("/{countryId}/{appUserId}")
+    public ResponseEntity<Void> deleteFromUserCityList(@PathVariable int countryId, @PathVariable int appUserId) throws DataAccessException {
+        Result<Void> result = service.deleteFromUserCountryList(appUserId, countryId);
+        if (result.getType() == ResultType.NOT_FOUND) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Error
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+    }
+
 
 
 }

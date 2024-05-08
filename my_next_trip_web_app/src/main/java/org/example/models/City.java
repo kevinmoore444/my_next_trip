@@ -1,6 +1,8 @@
 package org.example.models;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
@@ -12,20 +14,24 @@ public class City {
     @Size(max = 40, message = "City name cannot be greater than 40 characters.")
     private String name;
     @NotBlank(message = "Description is required.")
-    @Size(max = 40, message = "Description cannot be greater than 40 characters.")
+    @Size(max = 500, message = "Description cannot be greater than 40 characters.")
     private String description;
     @NotBlank(message = "Image URL is required.")
-    @Size(max = 40, message = "Image cannot be greater than 255 characters.")
+    @Size(max = 255, message = "Image cannot be greater than 255 characters.")
     private String image;
+    @NotNull(message = "Must be associated with a country ID")
+    @Min(value = 1, message = "Id must be a positive integer")
+    private int countryId;
 
     //Constructors
     public City(){};
 
-    public City(int id, String name, String description, String image) {
+    public City(int id, String name, String description, String image, int countryId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
+        this.countryId = countryId;
     }
 
     //Getters and Setters
@@ -61,6 +67,13 @@ public class City {
         this.image = image;
     }
 
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
 
     //HashCode and Equals
     @Override
@@ -68,11 +81,11 @@ public class City {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         City city = (City) o;
-        return id == city.id && Objects.equals(name, city.name) && Objects.equals(description, city.description) && Objects.equals(image, city.image);
+        return id == city.id && countryId == city.countryId && Objects.equals(name, city.name) && Objects.equals(description, city.description) && Objects.equals(image, city.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, image);
+        return Objects.hash(id, name, description, image, countryId);
     }
 }

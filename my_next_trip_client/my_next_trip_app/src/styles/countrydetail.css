@@ -1,0 +1,55 @@
+.main-component {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-component h2 {
+    text-align: center;
+    color: #333;
+    font-size: 2.5rem;
+}
+
+.main-component section {
+    margin-top: 40px;
+}
+
+.main-component h3 {
+    color: #555;
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+}
+
+.main-component h1 {
+    text-align: center;
+    font-size: 5rem;
+    margin: 20px 0;
+}
+
+.main-component h3 {
+    text-align: center;
+    font-size: 1.75rem;
+    margin: 20px 0;
+}
+
+/* Grid Layout for City and Attraction Cards */
+.main-component .city-cards-row,
+.main-component .attraction-cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.main-component .city-cards-row>div,
+.main-component .attraction-cards-row>div {
+    flex: 1 1 calc(33.33% - 20px);
+    /* Three cards per row */
+    min-width: 220px;
+    max-width: 300px;
+    /* Adjust as per card size */
+    box-sizing: border-box;
+}
