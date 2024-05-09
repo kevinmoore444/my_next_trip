@@ -3,19 +3,23 @@ import { useState, useContext, useEffect } from 'react';
 import UserAuth from '../context/UserAuth';
 
 
-const CityCard = ({ city }) => {
+const CityCard = ({ city, toggleRefresh }) => {
     const [inList, setInList] = useState(false);
     const auth = useContext(UserAuth);
-    const appUserId = auth.user.app_user_id;
+    const appUserId = auth.user?.app_user_id;
+    const token = auth.user?.token
 
     //Check if city is already in userList or not
     useEffect(() => {
+        // Only proceed if appUserId is available (logged in).
+        if (!appUserId || !token) return;
+
         const checkIfInList = async () => {
             const response = await fetch(`http://localhost:8080/api/city/user-list/${city.id}/${appUserId}`, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
-                        Authorization: `Bearer ${auth.user.token}`
+                        Authorization: `Bearer ${token}`
                     }
                 });
                 
@@ -26,7 +30,7 @@ const CityCard = ({ city }) => {
                 } 
         };
         checkIfInList();
-    }, [city.id, appUserId, auth.user.token]);
+    }, [city.id, appUserId, token]);
 
 
 
@@ -57,10 +61,9 @@ const CityCard = ({ city }) => {
         })
         .then(res => {
             if (res.ok) {
-                console.log(`City with ID ${cityId} successfully removed.`);
+                toggleRefresh();
                 return true;
             } else {
-                console.error(`Failed to remove city. Status: ${res.status}`);
                 return false;
             }
         })
@@ -68,11 +71,6 @@ const CityCard = ({ city }) => {
     }
 
     function addCityToList(cityId) {
-        //Define payload
-        const payload = {
-            cityId,
-            appUserId
-        };
         //Return keyword will return the result of the fetch (true or false) to the handle toggle function.
         return fetch(`http://localhost:8080/api/city/user-list/${cityId}/${appUserId}`, {
             method: 'POST',
@@ -81,8 +79,6 @@ const CityCard = ({ city }) => {
                 Accept: "application/json",
                 Authorization: `Bearer ${auth.user.token}`,
             },
-            //Stringify payload and include in body of request. 
-            body: JSON.stringify(payload),
         })
         .then(res => {
             if (res.ok) {
@@ -109,12 +105,14 @@ const CityCard = ({ city }) => {
                     <h5 className="card-title">{city.name}</h5>
                     <p className="card-text">{city.description}</p>
                 {/* Toggle Button */}
-                <button
-                    className={`toggle-button ${inList ? 'remove' : 'add'}`}
-                    onClick={(event) => handleToggle(event)}
-                >
-                    {inList ? 'Remove from List' : 'Add to List'}
-                </button>
+                {appUserId && (
+                    <button
+                        className={`toggle-button ${inList ? 'remove' : 'add'}`}
+                        onClick={(event) => handleToggle(event)}
+                    >
+                        {inList ? 'Remove from List' : 'Add to List'}
+                    </button>
+                )}
                 </div>
             </div>
     );

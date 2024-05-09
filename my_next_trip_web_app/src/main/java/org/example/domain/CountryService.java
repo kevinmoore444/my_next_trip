@@ -110,6 +110,11 @@ public class CountryService {
         return countryRepository.findallCountriesByUserId(userId);
     }
 
+    //Is Country on user bucket list?
+    public boolean findOneCountryByUserId(int attractionId, int userId){
+        return countryRepository.findOneCountryByUserId(attractionId, userId);
+    }
+
     //Add Country Associated with a User ID (Add to Bucket List)
     public Result<Void> addToUserCountryList(int appUserId, int countyId){
         Result<Void> result = new Result<>();

@@ -23,6 +23,9 @@ public interface CountryRepository{
     //Find All Countries associated with one User ID (Bucket List)
     List<Country> findallCountriesByUserId(int userId);
 
+    //Is Attraction on User Bucket List?
+    boolean findOneCountryByUserId(int countryId, int userId);
+
     //Add Country Associated with a User ID (Add to Bucket List)
     boolean addToUserCountryList(int appUserId, int countryId);
 

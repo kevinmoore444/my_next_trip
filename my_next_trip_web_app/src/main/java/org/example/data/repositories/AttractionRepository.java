@@ -23,6 +23,9 @@ public interface AttractionRepository {
     //Find All Attractions associated with one User ID (Get Bucket List)
     List<Attraction> findAllAttractionsByUserId(int userId);
 
+    //Is Attraction on User Bucket List?
+    boolean findOneAttractionByUserId(int cityId, int userId);
+
     //Add Country Associated with a User ID (Add to Bucket List)
     boolean addToUserAttractionList(int appUserId, int attractionId);
 

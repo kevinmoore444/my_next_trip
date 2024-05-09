@@ -111,6 +111,11 @@ public class AttractionService {
         return attractionRepository.findAllAttractionsByUserId(userId);
     }
 
+    //Is Attraction on user bucket list?
+    public boolean findOneAttractionByUserId(int attractionId, int userId){
+        return attractionRepository.findOneAttractionByUserId(attractionId, userId);
+    }
+
     //Add Attraction Associated with a User ID (Add to Bucket List)
     public Result<Void> addToUserAttractionList(int appUserId, int attractionId){
         Result<Void> result = new Result<>();

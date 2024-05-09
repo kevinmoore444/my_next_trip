@@ -103,9 +103,18 @@ public class AttractionController {
         return service.findAllAttractionsByUserId(userId);
     }
 
+    //Is City on user bucket list?
+    @GetMapping("/user-list/{attractionId}/{userId}")
+    public boolean findOneCityByUserId(@PathVariable int attractionId, @PathVariable int userId) throws DataAccessException {
+        return service.findOneAttractionByUserId(attractionId, userId);
+    }
+
+
     //Add Attraction Associated with a User ID (Add to Bucket List)
-    @PostMapping("/{attractionId}/{appUserId}")
+    @PostMapping("/user-list/{attractionId}/{appUserId}")
     public ResponseEntity<?> addToUserAttractionList(@PathVariable int attractionId, @PathVariable int appUserId) throws DataAccessException {
+
+
 
         Result<?> result = service.addToUserAttractionList(appUserId, attractionId);
         if (!result.isSuccess()) {
@@ -115,7 +124,7 @@ public class AttractionController {
     }
 
     //Delete Record From App_User_Attraction (Delete from Bucket List)
-    @DeleteMapping("/{attractionId}/{appUserId}")
+    @DeleteMapping("/user-list/{attractionId}/{appUserId}")
     public ResponseEntity<Void> deleteFromUserAttractionList(@PathVariable int attractionId, @PathVariable int appUserId) throws DataAccessException {
         Result<Void> result = service.deleteFromUserAttractionList(appUserId, attractionId);
         if (result.getType() == ResultType.NOT_FOUND) {

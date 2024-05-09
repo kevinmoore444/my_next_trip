@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import CityCard from '../components/CityCard'
 import AttractionCard from '../components/AttractionCard';
 import NavBar from '../components/NavBar'
-import Footer from '../components/Footer'
 import '../styles/countrydetail.css';
 
 const CountryDetail = () => {
@@ -82,7 +81,7 @@ const CountryDetail = () => {
                     ))}
                 </div>
                 <div className="city-cards-row">
-                    {cities.slice(3, 5).map((city) => (
+                    {cities.slice(3, 6).map((city) => (
                         <CityCard key={city.id} city={city} />
                     ))}
                 </div>
@@ -95,7 +94,7 @@ const CountryDetail = () => {
                     ))}
                 </div>
                 <div className="attraction-cards-row">
-                    {attractions.slice(3, 5).map((attraction) => (
+                    {attractions.slice(3, 6).map((attraction) => (
                         <AttractionCard key={attraction.id} attraction={attraction} />
                     ))}
                 </div>

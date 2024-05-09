@@ -2,6 +2,7 @@ package org.example.data.repositories;
 
 import org.example.data.mappers.CountryMapper;
 import org.example.models.Country;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
@@ -116,12 +117,34 @@ public class CountryJdbcTemplateRepository implements CountryRepository{
     public List<Country> findallCountriesByUserId(int userId){
         final String sql = """
                 SELECT * FROM country c
+                JOIN region r ON r.region_id = c.region_id
+                JOIN cost_of_living col ON col.cost_of_living_id = c.cost_of_living_id
                 JOIN app_user_country auc on auc.country_id = c.country_id
                 WHERE auc.app_user_id = ?
                 """;
 
         return jdbcTemplate.query(sql, new CountryMapper(), userId);
     }
+
+    //Is Country on User Bucket List?
+    @Override
+    public boolean findOneCountryByUserId(int countryId, int userId) {
+        final String sql = """
+            SELECT COUNT(*) FROM app_user_country auc
+            WHERE auc.country_id = ? AND auc.app_user_id = ?
+            """;
+        try {
+            // Execute the query to count matches for the specific city and user
+            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, countryId, userId);
+            // If result > 0, then a record was found, return true
+            return count != null && count > 0;
+        } catch (EmptyResultDataAccessException e) {
+            // If the query returns nothing (no match), catch and return false
+            return false;
+        }
+    }
+
+
 
 
     //Add Country Associated with a User ID (Add to Bucket List)

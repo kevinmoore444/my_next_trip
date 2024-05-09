@@ -37,7 +37,8 @@
 
 /* Grid Layout for City and Attraction Cards */
 .main-component .city-cards-row,
-.main-component .attraction-cards-row {
+.main-component .attraction-cards-row,
+.main-component .country-cards-row {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -45,7 +46,8 @@
 }
 
 .main-component .city-cards-row>div,
-.main-component .attraction-cards-row>div {
+.main-component .attraction-cards-row>div,
+.main-component .country-cards-row>div {
     flex: 1 1 calc(33.33% - 20px);
     /* Three cards per row */
     min-width: 220px;

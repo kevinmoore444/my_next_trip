@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect} from 'react';
 import { jwtDecode } from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.css';
@@ -9,6 +9,7 @@ import Register from "./pages/Register"
 import AdminAddForm from "./pages/AdminAddForm"
 import UserContext from "./context/UserAuth";
 import CountryDetail from "./pages/CountryDetail";
+import MyBucketList from "./pages/MyBucketList";
 
 const LOCAL_STORAGE_TOKEN_KEY = "countryToken";
 
@@ -77,6 +78,7 @@ function App() {
         <Route path="/add" element={<AdminAddForm/>}/>
         <Route path="/login" element={auth.user ? <Home/> : <Login/>}/>
         <Route path="/register" element={<Register/>}/>
+        <Route path="/mybucketlist" element={auth.user ? <MyBucketList/> : <Navigate to="/login"/>}/>
         <Route path="/browse-countries" element={<Home/>} />
         <Route path='/country/view/:countryId' element={<CountryDetail/>}/>
       </Routes>

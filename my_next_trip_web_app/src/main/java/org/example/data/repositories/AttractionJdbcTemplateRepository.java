@@ -2,6 +2,7 @@ package org.example.data.repositories;
 
 import org.example.data.mappers.AttractionMapper;
 import org.example.models.Attraction;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
@@ -116,6 +117,24 @@ public class AttractionJdbcTemplateRepository implements AttractionRepository{
                 """;
 
         return jdbcTemplate.query(sql, new AttractionMapper(), userId);
+    }
+
+    //Is Attraction on User Bucket List?
+    @Override
+    public boolean findOneAttractionByUserId(int attractionId, int userId) {
+        final String sql = """
+            SELECT COUNT(*) FROM app_user_attraction aua
+            WHERE aua.attraction_id = ? AND aua.app_user_id = ?
+            """;
+        try {
+            // Execute the query to count matches for the specific city and user
+            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, attractionId, userId);
+            // If result > 0, then a record was found, return true
+            return count != null && count > 0;
+        } catch (EmptyResultDataAccessException e) {
+            // If the query returns nothing (no match), catch and return false
+            return false;
+        }
     }
 
 

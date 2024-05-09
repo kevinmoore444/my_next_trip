@@ -39,6 +39,12 @@ import "../styles/nav.css";
                 </li>
                 </ul>
                 <ul className="navbar-nav">
+                {/* Conditionally render Admin: Add-Content button */}
+                {auth.user && auth.user.hasRole('ADMIN') && (
+                            <li className="nav-item">
+                                <Link className="btn nav-link" to={"/add"}>Admin: Add Content</Link>
+                            </li>
+                )}
                 {/* If User logged in display log out button, and vice versa */}
                 {auth.user ? (
                         <li className="nav-item">

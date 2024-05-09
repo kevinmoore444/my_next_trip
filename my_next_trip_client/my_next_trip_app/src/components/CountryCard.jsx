@@ -1,9 +1,99 @@
 import { Link } from 'react-router-dom';
 import "../styles/countrycard.css";
+import UserAuth from '../context/UserAuth';
+import { useState, useContext, useEffect } from 'react';
 
 
-const CountryCard = ({ country }) => {
+const CountryCard = ({ country, toggleRefresh }) => {
     const { id : countryId, name, image, description, costOfLiving, region } = country;
+    const [inList, setInList] = useState(false);
+    const auth = useContext(UserAuth);
+    const appUserId = auth.user?.app_user_id;
+    const token = auth.user?.token
+
+    //Check if country is already in userList or not
+    useEffect(() => {
+        // Only proceed if appUserId is available (logged in).
+        if (!appUserId || !token) return;
+
+        const checkIfInList = async () => {
+            const response = await fetch(`http://localhost:8080/api/country/user-list/${country.id}/${appUserId}`, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const isInList = await response.json();
+                    // Assume API returns a boolean in "isInList" field
+                    setInList(isInList);
+                } 
+        };
+        checkIfInList();
+    }, [country.id, appUserId, token]);
+
+    function handleToggle(event) {
+        event.preventDefault();
+        if (inList) {
+            // Remove the city from the list
+            const success =  removeCountryFromList(country.id);
+            if (success) setInList(false);
+        } else {
+            // Add the city to the list
+            const success = addCountryToList(country.id);
+            if (success) setInList(true);
+        }
+    }
+
+    function removeCountryFromList(countryId){
+        return fetch(`http://localhost:8080/api/country/user-list/${countryId}/${appUserId}`, {
+            method: 'DELETE',
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${auth.user.token}`
+            }
+        })
+        .then(res => {
+            if (res.ok) {
+                toggleRefresh();
+                return true;
+            } else {
+                return false;
+            }
+        })
+        .catch(console.error);
+    }
+
+    function addCountryToList(countryId) {
+        //Return keyword will return the result of the fetch (true or false) to the handle toggle function.
+        return fetch(`http://localhost:8080/api/country/user-list/${countryId}/${appUserId}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${auth.user.token}`,
+            },
+        })
+        .then(res => {
+            if (res.ok) {
+                return true;
+            } else if (res.status === 400) {
+                return false;
+            } else {
+              //If the response code is anything else, reject promise and throw code execution to .catch()
+                return Promise.reject(
+                new Error(`Unexpected status code: ${res.status}`)
+                );
+            }
+            })
+        .catch(console.error); 
+        }
+
+
+
+
 
     return (
         <Link to={`/country/view/${countryId}`} style={{ textDecoration: 'none' }}>
@@ -18,6 +108,15 @@ const CountryCard = ({ country }) => {
                     <p className="card-text">
                         <small className="text-muted">Region: {region.name}</small>
                     </p>
+                    {/* Toggle Button */}
+                    {appUserId && (
+                        <button
+                            className={`toggle-button ${inList ? 'remove' : 'add'}`}
+                            onClick={(event) => handleToggle(event)}
+                        >
+                        {inList ? 'Remove from List' : 'Add to List'}
+                        </button>
+                    )}
                 </div>
             </div>
         </Link>

@@ -99,8 +99,15 @@ public class CountryController {
         return service.findAllCountriesByUserId(userId);
     }
 
+    //Is Country on user bucket list?
+    @GetMapping("/user-list/{countryId}/{userId}")
+    public boolean findOneCityByUserId(@PathVariable int countryId, @PathVariable int userId) throws DataAccessException {
+        return service.findOneCountryByUserId(countryId, userId);
+    }
+
+
     //Add Country Associated with a User ID (Add to Bucket List)
-    @PostMapping("/{countryId}/{appUserId}")
+    @PostMapping("/user-list/{countryId}/{appUserId}")
     public ResponseEntity<?> addToUserCountryList(@PathVariable int countryId, @PathVariable int appUserId) throws DataAccessException {
 
         Result<?> result = service.addToUserCountryList(appUserId, countryId);
@@ -111,7 +118,7 @@ public class CountryController {
     }
 
     //Delete Record From App_User_City (Delete from Bucket List)
-    @DeleteMapping("/{countryId}/{appUserId}")
+    @DeleteMapping("/user-list/{countryId}/{appUserId}")
     public ResponseEntity<Void> deleteFromUserCityList(@PathVariable int countryId, @PathVariable int appUserId) throws DataAccessException {
         Result<Void> result = service.deleteFromUserCountryList(appUserId, countryId);
         if (result.getType() == ResultType.NOT_FOUND) {
