@@ -1,6 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import UserAuth from '../context/UserAuth';
 import '../styles/attractioncard.css';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 const AttractionCard = ({ attraction, toggleRefresh }) => {
     const [inList, setInList] = useState(false);
@@ -31,6 +33,23 @@ const AttractionCard = ({ attraction, toggleRefresh }) => {
         };
         checkIfInList();
     }, [attraction.id, appUserId, token]);
+
+    function handleDelete(attractionId){
+        fetch(`http://localhost:8080/api/attraction/user/${attractionId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(res => {
+            if (res.ok) {
+                toggleRefresh();
+            } 
+        })
+        .catch(console.error);
+    }
+
+
 
     function handleToggle(event) {
         event.preventDefault();
@@ -107,6 +126,16 @@ const AttractionCard = ({ attraction, toggleRefresh }) => {
                     >
                         {inList ? 'Remove from List' : 'Add to List'}
                     </button>
+                )}
+                {/* Delete Button only for Admin */}
+                {auth.user && auth.user.hasRole('ADMIN') && (
+                    <Button
+                        className="btn btn-danger"
+                        style={{ position: 'absolute', top: '10px', right: '10px' }}
+                        onClick={() => window.confirm("Are you sure you want to Delete?") && handleDelete(attraction.id)}
+                    >
+                        Delete
+                    </Button>
                 )}
                 </div>
             </div>

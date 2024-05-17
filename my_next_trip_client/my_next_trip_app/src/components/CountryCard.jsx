@@ -15,7 +15,7 @@ const CountryCard = ({ country, toggleRefresh }) => {
     useEffect(() => {
         // Only proceed if appUserId is available (logged in).
         if (!appUserId || !token) return;
-
+    
         const checkIfInList = async () => {
             const response = await fetch(`http://localhost:8080/api/country/user-list/${country.id}/${appUserId}`, {
                     method: 'GET',
@@ -33,6 +33,22 @@ const CountryCard = ({ country, toggleRefresh }) => {
         };
         checkIfInList();
     }, [country.id, appUserId, token]);
+
+    function handleDelete(countryId){
+        fetch(`http://localhost:8080/api/country/user/${countryId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(res => {
+            if (res.ok) {
+                toggleRefresh();
+            } 
+        })
+        .catch(console.error);
+    }
+
 
     function handleToggle(event) {
         event.preventDefault();
@@ -92,9 +108,6 @@ const CountryCard = ({ country, toggleRefresh }) => {
         }
 
 
-
-
-
     return (
         <Link to={`/country/view/${countryId}`} style={{ textDecoration: 'none' }}>
             <div className="card country-card mb-3" style={{ borderColor: '#FFBF47', cursor: 'pointer' }}>
@@ -116,6 +129,16 @@ const CountryCard = ({ country, toggleRefresh }) => {
                         >
                         {inList ? 'Remove from List' : 'Add to List'}
                         </button>
+                    )}
+                    {/* Delete Button only for Admin */}
+                    {auth.user && auth.user.hasRole('ADMIN') && (
+                        <Link
+                            className="btn btn-danger"
+                            style={{ position: 'absolute', top: '10px', right: '10px' }}
+                            onClick={() => window.confirm("Are you sure you want to Delete?") && handleDelete(countryId)}
+                        >
+                            Delete
+                        </Link>
                     )}
                 </div>
             </div>

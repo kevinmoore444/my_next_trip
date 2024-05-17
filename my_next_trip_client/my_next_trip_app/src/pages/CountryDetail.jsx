@@ -10,6 +10,10 @@ const CountryDetail = () => {
     const [attractions, setAttractions] = useState([]);
     const [country, setCountry] = useState([]);
     const { countryId } = useParams();
+    // Function to toggle the refetch trigger
+    const [refresh, setRefresh] = useState(false);
+    // Function to toggle refresh state
+    const toggleRefresh = () => setRefresh((prev) => !prev);
 
 
     useEffect(() => {
@@ -66,7 +70,7 @@ const CountryDetail = () => {
         getCountry();
         getCities();
         getAttractions();
-    }, [countryId]);
+    }, [countryId, refresh]);
 
     return (
         <>
@@ -77,12 +81,12 @@ const CountryDetail = () => {
                 <h3>Cities</h3>
                 <div className="city-cards-row">
                     {cities.slice(0, 3).map((city) => (
-                        <CityCard key={city.id} city={city} />
+                        <CityCard key={city.id} city={city} toggleRefresh={toggleRefresh}/>
                     ))}
                 </div>
                 <div className="city-cards-row">
                     {cities.slice(3, 6).map((city) => (
-                        <CityCard key={city.id} city={city} />
+                        <CityCard key={city.id} city={city} toggleRefresh={toggleRefresh}/>
                     ))}
                 </div>
             </section>
@@ -90,12 +94,12 @@ const CountryDetail = () => {
                 <h3>Attractions</h3>
                 <div className="attraction-cards-row">
                     {attractions.slice(0, 3).map((attraction) => (
-                        <AttractionCard key={attraction.id} attraction={attraction} />
+                        <AttractionCard key={attraction.id} attraction={attraction} toggleRefresh={toggleRefresh}/>
                     ))}
                 </div>
                 <div className="attraction-cards-row">
                     {attractions.slice(3, 6).map((attraction) => (
-                        <AttractionCard key={attraction.id} attraction={attraction} />
+                        <AttractionCard key={attraction.id} attraction={attraction} toggleRefresh={toggleRefresh}/>
                     ))}
                 </div>
             </section>

@@ -1,6 +1,8 @@
 import '../styles/citycard.css';
 import { useState, useContext, useEffect } from 'react';
 import UserAuth from '../context/UserAuth';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 
 const CityCard = ({ city, toggleRefresh }) => {
@@ -32,7 +34,20 @@ const CityCard = ({ city, toggleRefresh }) => {
         checkIfInList();
     }, [city.id, appUserId, token]);
 
-
+    function handleDelete(cityId){
+        fetch(`http://localhost:8080/api/city/user/${cityId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(res => {
+            if (res.ok) {
+                toggleRefresh();
+            } 
+        })
+        .catch(console.error);
+    }
 
 
     function handleToggle(event) {
@@ -112,6 +127,16 @@ const CityCard = ({ city, toggleRefresh }) => {
                     >
                         {inList ? 'Remove from List' : 'Add to List'}
                     </button>
+                )}
+                {/* Delete Button only for Admin */}
+                {auth.user && auth.user.hasRole('ADMIN') && (
+                    <Button
+                        className="btn btn-danger"
+                        style={{ position: 'absolute', top: '10px', right: '10px' }}
+                        onClick={() => window.confirm("Are you sure you want to Delete?") && handleDelete(city.id)}
+                    >
+                        Delete
+                    </Button>
                 )}
                 </div>
             </div>
